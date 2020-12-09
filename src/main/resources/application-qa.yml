@@ -12,3 +12,10 @@ spring:
   flyway:
     location: classpath:db/migration
     table: schema_history
+
+  security:
+    jwt:
+      keystore-location: keys/keystore.jks
+      keystore-password: password
+      key-alias: jwtsigning
+      private-key-passphrase: password

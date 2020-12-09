@@ -13,13 +13,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 class PSController(private val psRepository: PSRepository, private val pservice: PService)
 {
     @PostMapping("/login")
-    fun loginUser(@RequestBody userMap: Map<String, String>): ResponseEntity<Map<String, Any>> {
+    fun loginUser(@RequestBody userMap: Map<String, String>): ResponseEntity<String> {
         val nome = userMap["nome"] as String
         val idtag = userMap["idtag"] as String
-        val user: PSN4 = pservice.validatePlayer(nome, idtag)
-        return ResponseEntity(pservice.generateJWTToken(user), HttpStatus.OK)
+        val find = psRepository.findPlayerByNomeAndIdtag(nome, idtag)
+        return ResponseEntity(pservice.login(find), HttpStatus.OK)
+     //   return ResponseEntity(pservice.generateJWTToken(user), HttpStatus.OK)
     }
-
     @GetMapping("/allPlayers")
     fun getAllPlayers(): MutableIterable<PSN4> =
             pservice.getAllPlayers()

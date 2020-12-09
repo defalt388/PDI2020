@@ -1,7 +1,6 @@
 package com.PSN.crudPDI.repository
 
 import com.PSN.crudPDI.model.PSN4
-import org.mindrot.jbcrypt.BCrypt
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
@@ -10,5 +9,6 @@ import org.springframework.stereotype.Repository
 interface PSRepository : CrudRepository<PSN4, Long>
 {
     fun findPlayerByNomeAndIdtag(nome: String, idtag: String): PSN4
+    fun findPlayerByNome(nome: String): PSN4
 
 }
