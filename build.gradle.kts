@@ -19,8 +19,6 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("org.projectlombok:lombok:1.18.8")
 	implementation("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
 	implementation ("com.auth0:java-jwt:3.11.0")
@@ -44,7 +42,6 @@ dependencies {
 	testImplementation("io.rest-assured:xml-path:3.1.1")
 	testImplementation("io.rest-assured:json-schema-validator:3.1.1")
 	testImplementation("org.assertj:assertj-core:3.16.1")
-	testImplementation ("org.testcontainers:testcontainers:1.14.3")
 }
 tasks["check"].dependsOn("integrationTest")
 

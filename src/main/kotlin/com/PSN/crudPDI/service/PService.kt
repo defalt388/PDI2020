@@ -2,79 +2,23 @@ package com.PSN.crudPDI.service
 
 import com.PSN.crudPDI.model.PSN4
 import com.PSN.crudPDI.repository.PSRepository
-import com.PSN.crudPDI.security.JwtHelper
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.server.ResponseStatusException
-import java.util.*
-import java.util.stream.Collectors
 import javax.persistence.EntityNotFoundException
 
 
 @Service
 class PService (
         @Autowired
-        private val psRepository: PSRepository,
-        @Autowired
-        private var jwtHelper: JwtHelper,
-        @Autowired
-        private var userDetailsService: UserDetailsService,
-        @Autowired
-        private var passwordEncoder: PasswordEncoder
+        private val psRepository: PSRepository
 ){
-
-    fun PService(jwtHelper: JwtHelper, userDetailsService: UserDetailsService, passwordEncoder: PasswordEncoder)
-    {
-        this.jwtHelper = jwtHelper
-        this.userDetailsService = userDetailsService
-        this.passwordEncoder = passwordEncoder
-    }
-
-    @PostMapping("/login")
-    fun login(player: PSN4): String? {
-
-        val user: UserDetails
-
-        try {
-            user = userDetailsService.loadUserByUsername(player.nome)
-        } catch (e: UsernameNotFoundException)
-        {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "usuario não encontrado")
-        }
-
-        if (player.idtag == user.password) {
-            val claims: MutableMap<String?, String?> = HashMap()
-            claims["nome"] = player.nome
-            val authorities = user.authorities.stream()
-                    .map { obj: GrantedAuthority -> obj.authority }
-                    .collect(Collectors.joining(","))
-            claims["authorities"] = authorities
-            claims["id"] = player.id.toString()
-            claims["genero"] = player.genero
-            claims["idtag"] = player.idtag
-            claims["jogos"] = player.jogos.toString()
-            claims["trofeu"] = player.trofeu.toString()
-            claims["avaliacao"] = player.avaliacao.toString()
-            val jwt = jwtHelper.createJwtForClaims(player.nome, claims)
-            return jwt
-            //return jwt?.let { LoginResult(it) }
-        }
-
-        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "usuario não autenticado")
-    }
 
     fun getAllPlayers(): MutableIterable<PSN4>
     {
